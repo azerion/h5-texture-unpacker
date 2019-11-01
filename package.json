@@ -1,0 +1,126 @@
+{
+    "name": "@azerion/h5-texture-unpacker",
+    "author": "Azerion",
+    "version": "0.0.1",
+    "description": "Simple CLI tool that allows you to unpack your existing Texture atlasses provided that you have the JSON file available",
+    "contributors": [
+        {
+            "name": "Ale Bles",
+            "email": "a.bles@azerion.com"
+        }
+    ],
+    "main": "dist/h5-texture-unpacker.js",
+    "bin": {
+        "unpack": "dist/h5-texture-unpacker.js"
+    },
+    "files": [
+        "dist"
+    ],
+    "repository": {
+        "type": "git",
+        "url": "git+ssh://git@gitlab.azerdev.com:fabrique/tools/h5-texture-unpacker.git"
+    },
+    "license": "MIT",
+    "engines": {
+        "node": ">=6.0.0"
+    },
+    "scripts": {
+        "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
+        "prebuild": "rimraf dist",
+        "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src",
+        "start": "rollup -c rollup.config.ts -w",
+        "test": "jest --coverage",
+        "test:watch": "jest --coverage --watch",
+        "test:prod": "npm run lint && npm run test -- --no-cache",
+        "deploy-docs": "ts-node tools/gh-pages-publish",
+        "report-coverage": "cat ./coverage/lcov.info | coveralls",
+        "commit": "git-cz",
+        "precommit": "lint-staged"
+    },
+    "lint-staged": {
+        "{src,test}/**/*.ts": [
+            "prettier --write",
+            "git add"
+        ]
+    },
+    "config": {
+        "name": "h5-texture-unpacker"
+    },
+    "jest": {
+        "transform": {
+            ".(ts|tsx)": "ts-jest"
+        },
+        "testEnvironment": "node",
+        "testRegex": "(/__tests__/.*|\\.(test|spec))\\.(ts|tsx|js)$",
+        "moduleFileExtensions": [
+            "ts",
+            "tsx",
+            "js"
+        ],
+        "coveragePathIgnorePatterns": [
+            "/node_modules/",
+            "/test/"
+        ],
+        "coverageThreshold": {
+            "global": {
+                "branches": 0,
+                "functions": 0,
+                "lines": 0,
+                "statements": 0
+            }
+        },
+        "collectCoverageFrom": [
+            "src/*.{js,ts}"
+        ]
+    },
+    "prettier": {
+        "semi": false,
+        "singleQuote": true
+    },
+    "commitlint": {
+        "extends": [
+            "@commitlint/config-conventional"
+        ]
+    },
+    "devDependencies": {
+        "@commitlint/cli": "^8.2.0",
+        "@commitlint/config-conventional": "^7.6.0",
+        "@types/jest": "^23.3.2",
+        "@types/node": "^10.17.2",
+        "@types/yargs": "^13.0.3",
+        "colors": "^1.4.0",
+        "commitizen": "^4.0.3",
+        "coveralls": "^3.0.6",
+        "cross-env": "^5.2.1",
+        "cz-conventional-changelog": "^2.1.0",
+        "husky": "^1.0.1",
+        "jest": "^24.9.0",
+        "jest-config": "^24.9.0",
+        "lint-staged": "^8.2.1",
+        "lodash.camelcase": "^4.3.0",
+        "prettier": "^1.18.2",
+        "prompt": "^1.0.0",
+        "replace-in-file": "^3.4.4",
+        "rimraf": "^2.7.1",
+        "rollup": "^0.67.0",
+        "rollup-plugin-commonjs": "^9.3.4",
+        "rollup-plugin-node-resolve": "^3.4.0",
+        "rollup-plugin-preserve-shebangs": "^0.1.2",
+        "rollup-plugin-serve": "^1.0.1",
+        "rollup-plugin-terser": "^5.1.2",
+        "rollup-plugin-typescript2": "^0.21.2",
+        "shelljs": "^0.8.3",
+        "ts-jest": "^23.10.2",
+        "ts-node": "^7.0.1",
+        "tslint": "^5.20.0",
+        "tslint-config-prettier": "^1.15.0",
+        "tslint-config-standard": "^8.0.1",
+        "typedoc": "^0.15.0",
+        "typescript": "^3.6.3"
+    },
+    "dependencies": {
+        "@types/sharp": "^0.23.0",
+        "sharp": "^0.23.2",
+        "yargs": "^14.2.0"
+    }
+}
