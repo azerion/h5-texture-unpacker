@@ -9,7 +9,7 @@
             "es2017",
             "dom"
         ],
-//        "allowJs": true,
+        "allowJs": true,
         "strict": true,
         "sourceMap": false,
         "declaration": false,
@@ -17,7 +17,7 @@
         "experimentalDecorators": true,
         "emitDecoratorMetadata": true,
         "esModuleInterop": true,
-        "outDir": "dist",
+        "outDir": "dist/lib",
         "typeRoots": [
             "node_modules/@types"
         ]

@@ -12,24 +12,24 @@ ale@computer:~$ npm install @azerion/h5-texture-unpacker -g
 Now you'll be able to use the command:
 ```
 ale@computer:~$ unpack
-Usage: unpack [imageFile] [jsonFile] [outputDir]
+Usage: unpack -j [jsonFile] -o [outputDir]
 ```
 
 Usage
 -----
 ```
-ale@NL0NTB032:/media/ale/dev/tools/h5-texture-unpacker$ unpack
-Usage: unpack [imageFile] [jsonFile] [outputDir]
+ale@computer:~$ unpack
+Usage: unpack -j [jsonFile] -o [outputDir]
 
 Options:
   --version        Show version number                                 [boolean]
-  --imageFile, -i  The input texture image                   [string] [required]
+  --imageFile, -i  The input texture image                [string] [default: ""]
   --jsonFile, -j   The input JSON configuration              [string] [required]
   --outputDir, -o  The output folder                         [string] [required]
+  --verbose, -v    Show log messages                  [boolean] [default: false]
   -h, --help       Show help                                           [boolean]
 
 copyright Azerion 2019
-
 ```
 
 TODO

@@ -1,7 +1,7 @@
 {
     "name": "@azerion/h5-texture-unpacker",
     "author": "Azerion",
-    "version": "0.0.1",
+    "version": "0.0.2",
     "description": "Simple CLI tool that allows you to unpack your existing Texture atlasses provided that you have the JSON file available",
     "contributors": [
         {
@@ -27,7 +27,7 @@
     "scripts": {
         "lint": "tslint  --project tsconfig.json -t codeFrame 'src/**/*.ts' 'test/**/*.ts'",
         "prebuild": "rimraf dist",
-        "build": "tsc --module commonjs && rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src",
+        "build": "rollup -c rollup.config.ts && typedoc --out docs --target es6 --theme minimal --mode file src",
         "start": "rollup -c rollup.config.ts -w",
         "test": "jest --coverage",
         "test:watch": "jest --coverage --watch",
@@ -86,7 +86,8 @@
         "@commitlint/cli": "^8.2.0",
         "@commitlint/config-conventional": "^7.6.0",
         "@types/jest": "^23.3.2",
-        "@types/node": "^10.17.2",
+        "@types/node": "^10.17.3",
+        "@types/sharp": "^0.23.0",
         "@types/yargs": "^13.0.3",
         "colors": "^1.4.0",
         "commitizen": "^4.0.3",
@@ -103,6 +104,7 @@
         "replace-in-file": "^3.4.4",
         "rimraf": "^2.7.1",
         "rollup": "^0.67.0",
+        "rollup-plugin-add-shebang": "^0.3.1",
         "rollup-plugin-commonjs": "^9.3.4",
         "rollup-plugin-node-resolve": "^3.4.0",
         "rollup-plugin-preserve-shebangs": "^0.1.2",
@@ -119,8 +121,8 @@
         "typescript": "^3.6.3"
     },
     "dependencies": {
-        "@types/sharp": "^0.23.0",
         "sharp": "^0.23.2",
+        "winston": "^3.2.1",
         "yargs": "^14.2.0"
     }
 }

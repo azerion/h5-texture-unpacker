@@ -1,12 +1,22 @@
-#!/usr/bin/env node
-
 import { OutputInfo } from 'sharp'
 
 const Sharp = require('sharp')
 const path = require('path')
 const fs = require('fs')
 const yargs = require('yargs')
+const winston = require('winston')
 
+let date = new Date().toISOString()
+const logFormat = winston.format.printf(function(info: any) {
+    return `${date}-${info.level}: ${JSON.stringify(info.message, null, 4)}\n`
+})
+const logger = winston.createLogger({
+    transports: [
+        new winston.transports.Console({
+            format: winston.format.combine(winston.format.colorize(), logFormat)
+        })
+    ]
+})
 const basePath = path.join(__dirname, '../')
 
 declare interface IMatrix {
@@ -41,12 +51,12 @@ declare interface IJSONAtlas {
         scale: number
     }
 }
-
 const argv = yargs
-    .usage('Usage: $0 [imageFile] [jsonFile] [outputDir]')
+    .usage('Usage: $0 -j [jsonFile] -o [outputDir]')
     .option('imageFile', {
         alias: 'i',
-        demandOption: true,
+        demandOption: false,
+        default: '',
         describe: 'The input texture image',
         type: 'string'
     })
@@ -62,20 +72,44 @@ const argv = yargs
         describe: 'The output folder',
         type: 'string'
     })
+    .option('verbose', {
+        alias: 'v',
+        default: false,
+        describe: 'Show log messages',
+        type: 'boolean'
+    })
     .help('h')
     .alias('h', 'help')
     .epilog('copyright Azerion 2019').argv
 
-const imgUrl: string = path.join(argv.i)
+let imgUrl: string = path.join(argv.i)
 const jsonUrl: string = path.join(argv.j)
 const outputDir: string = path.join(argv.o, '/')
 const json: IJSONAtlas = JSON.parse(fs.readFileSync(jsonUrl))
+
+logger.level = argv.verbose === true ? 'info' : 'warn'
+
+if (argv.i === '') {
+    //Image path empty string, let's see if we can get the image from the json
+    imgUrl = path.join(path.parse(jsonUrl).dir, json.meta.image)
+}
+
+if (!fs.existsSync(imgUrl)) {
+    //Let's check if the image file is found
+    logger.error('Could not find image at specified path!')
+    process.exit(1)
+}
 
 if (!fs.existsSync(outputDir)) {
     fs.mkdirSync(outputDir)
 }
 
 json.frames.forEach((source: IFrame) => {
+    if (source.frame.w === 0 || source.frame.h === 0) {
+        logger.warn(`Unable to write file , ${source.filename}: Source width/height is 0`)
+
+        return
+    }
     Sharp(imgUrl)
         .extract({
             width: source.frame.w,
@@ -85,9 +119,9 @@ json.frames.forEach((source: IFrame) => {
         })
         .toFile(path.join(outputDir, '/', source.filename + '.png'))
         .then((fileInfo: OutputInfo) => {
-            console.log('File: ', source.filename, ' written')
+            logger.info(`File: ${source.filename} written`)
         })
         .catch((err: any) => {
-            console.log('Unable to write file ', source.filename, ':', err)
+            logger.info(`Unable to write file , ${source.filename}:, ${err}`)
         })
 })

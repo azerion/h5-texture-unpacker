@@ -3,7 +3,7 @@ import commonjs from 'rollup-plugin-commonjs';
 import typescript from 'rollup-plugin-typescript2';
 import serve from 'rollup-plugin-serve';
 import { terser } from 'rollup-plugin-terser'
-import { preserveShebangs } from 'rollup-plugin-preserve-shebangs';
+import shebang from 'rollup-plugin-add-shebang';
 
 
 const pkg = require('./package.json');
@@ -14,12 +14,12 @@ const isWatching = process.argv.findIndex((element) => element === '-w') !== -1;
 
 let basePlugins = [];
 if (isWatching) {
-    basePlugins = [
+    basePlugins.push(
         serve({
             contentBase: ['./', './example'],
             port: 8080
         })
-    ];
+    );
 }
 export default {
     input: `src/${libraryName}.ts`,
@@ -32,7 +32,6 @@ export default {
         include: 'src/**',
     },
     plugins: basePlugins.concat([
-        preserveShebangs(),
         // Compile TypeScript files
         typescript({useTsconfigDeclarationDir: false, objectHashIgnoreUnknownHack: true}),
         // Allow node_modules resolution, so you can use 'external' to control
@@ -42,7 +41,10 @@ export default {
         // Allow bundling cjs modules (unlike webpack, rollup doesn't understand cjs)
         commonjs(),
         terser({
-            include: [/^.+\.min\.js$/],
+            include: [/^.+\.js$/],
+        }),
+        shebang({
+            include:  `dist/${libraryName}.js`
         })
     ])
 };
