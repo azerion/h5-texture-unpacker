@@ -12,7 +12,7 @@ ale@computer:~$ npm install @azerion/h5-texture-unpacker -g
 Now you'll be able to use the command:
 ```
 ale@computer:~$ unpack
-Usage: unpack -j [jsonFile] -o [outputDir]
+Usage: unpack -i [imageFile] -a [atlasFile] -o [outputDir]
 ```
 
 Usage
@@ -23,18 +23,18 @@ Usage: unpack -j [jsonFile] -o [outputDir]
 
 Options:
   --version        Show version number                                 [boolean]
-  --imageFile, -i  The input texture image                [string] [default: ""]
+  --atlasFile, -i  The input texture image                   [string] [required]
   --jsonFile, -j   The input JSON configuration              [string] [required]
   --outputDir, -o  The output folder                         [string] [required]
   --verbose, -v    Show log messages                  [boolean] [default: false]
   -h, --help       Show help                                           [boolean]
 
-copyright Azerion 2019
+copyright Azerion 2021
 ```
 
 TODO
 ----
-- [ ] Add support for format
+- [ ] Add support for XML
 - [ ] Format validation
 - [ ] parse/process trimmed/rotation from json
 
@@ -46,6 +46,7 @@ We'd love to include more format as we go, but for now will only add the ones we
 Credits
 =======
 Created with https://github.com/alexjoverm/typescript-library-starter.git 
+Example assets  by [Kenney](https://www.kenney.nl)
 
 Disclaimer
 ----------
