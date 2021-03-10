@@ -56,8 +56,8 @@ const argv = yargs
 let imgPath: string = path.join(argv.i)
 const atlasPath: string = path.join(argv.a)
 const outputDir: string = path.join(argv.o, '/')
-const rawData: string = fs.readFileSync(atlasPath)
-let imageMatrixData: IImageMatrix[] | null = null
+const rawData: Buffer = fs.readFileSync(atlasPath)
+let imageMatrixData: IImageMatrix[] = []
 
 logger.level = argv.verbose === true ? 'info' : 'warn'
 
@@ -92,6 +92,11 @@ if (atlasPath.match(/\.json$/)) {
 }
 
 let count: number = 0
+
+if (imageMatrixData.length === 0) {
+    logger.error(`No data found: ${atlasPath}`)
+    process.exit(1)
+}
 
 imageMatrixData.forEach((source: IImageMatrix) => {
     if (source.w === 0 || source.h === 0) {

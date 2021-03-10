@@ -1,7 +1,7 @@
 import { IImageMatrix } from '../IMatrix'
 
-export function JsonHash(data: string): IImageMatrix[] | null {
-    const atlasData: any = JSON.parse(data)
+export function JsonHash(data: Buffer): IImageMatrix[] {
+    const atlasData: any = JSON.parse(data.toString())
     const imageResult: IImageMatrix[] = []
 
     if (atlasData.hasOwnProperty('frames') && !Array.isArray(atlasData.frames)) {
@@ -17,8 +17,6 @@ export function JsonHash(data: string): IImageMatrix[] | null {
                 y: imageData.frame.y
             })
         })
-
-        return imageResult
     }
-    return null
+    return imageResult
 }

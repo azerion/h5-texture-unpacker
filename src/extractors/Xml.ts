@@ -1,32 +1,24 @@
 import { IImageMatrix } from '../IMatrix'
 
-const xml2js = require('xml2js')
-const parser = new xml2js.Parser()
+const xpath = require('xpath'),
+    dom = require('xmldom').DOMParser
 
-export function Xml(data: string): IImageMatrix[] | null {
-    let atlasData: any | null = null
-
-    parser.parseString(data, function(err: any, result: any) {
-        console.dir(result)
-        console.log('Done')
-    })
-
-    process.exit(0)
-
+export function Xml(data: Buffer): IImageMatrix[] {
+    const doc = new dom().parseFromString(data.toString())
+    const nodes = xpath.select('//SubTexture', doc)
     const imageResult: IImageMatrix[] = []
 
-    if (atlasData.hasOwnProperty('frames') && Array.isArray(atlasData.frames)) {
-        atlasData.frames.forEach((imageData: any) => {
+    if (nodes.length > 0) {
+        nodes.forEach((node: any) => {
             imageResult.push({
-                name: imageData.filename,
-                w: imageData.frame.w,
-                h: imageData.frame.h,
-                x: imageData.frame.x,
-                y: imageData.frame.y
+                name: node.getAttribute('name'),
+                w: parseInt(node.getAttribute('width')),
+                h: parseInt(node.getAttribute('height')),
+                x: parseInt(node.getAttribute('x')),
+                y: parseInt(node.getAttribute('y'))
             })
         })
-
-        return imageResult
     }
-    return null
+
+    return imageResult
 }
