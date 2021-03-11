@@ -9,6 +9,6 @@ test
 tools
 vendor
 config/*
-rollup.config.ts
+rollup.config.js
 tslint.json
 tsconfig.json
