@@ -1,7 +1,7 @@
 import { IImageMatrix } from '../IMatrix'
 
 const xpath = require('xpath'),
-    dom = require('xmldom').DOMParser
+    dom = require('@xmldom/xmldom').DOMParser
 
 export function Xml(data: Buffer): IImageMatrix[] {
     const doc = new dom().parseFromString(data.toString())
