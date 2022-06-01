@@ -87,7 +87,7 @@
     },
     "dependencies": {
         "@xmldom/xmldom": "^0.7.5",
-        "sharp": "^0.27.2",
+        "sharp": "^0.30.5",
         "winston": "^3.3.3",
         "xpath": "0.0.32",
         "yargs": "^16.2.0"
